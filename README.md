@@ -73,9 +73,9 @@ Rede VPC Criada com Sucesso!
 ![Criando Chave SSH](docs-img/img-8.png)
 ![Criando Chave SSH](docs-img/img-9.png)
 
-Caso você ainda não tinha uma chave SSH Publica e Privada na sua máquina você precisar criar uma.
+Caso você ainda não tenha uma chave SSH Publica e Privada na sua máquina, você precisará criar uma.
 
-Criar Diretório  padrão: `mkdir .ssh`
+Criar Diretório no padrão: `mkdir .ssh`
 
 Gerar Chaves Publicas e Privadas: `ssh-keygen -m PEM -N '' -f ~/.ssh/id_rsa`
 
@@ -83,7 +83,7 @@ Visualizar o Conteúdo da Chave: `cat .ssh/id_rsa.pub`
 
 Depois colocar no campo Chave SSH no GCP.
 
-### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Computer Engine e adiciona-lo a rede da VPC
+### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Computer Engine e adicioná-lo a rede da VPC
 
 ![Criando Computer Engine](docs-img/img-10.png)
 ![Configuração da Máquina](docs-img/img-11.png)
