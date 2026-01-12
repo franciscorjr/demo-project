@@ -184,13 +184,11 @@ Você pode se conectar pela interface do Computer Engine ou pelo terminal.
 
 Para se conectar via terminal, utilize o comando abaixo e lembre-se de alterar as informações para seu contexto.
 
-Comando: `ssh usuario@ip-publico`
-
-
 Comando:
 ```
-git clone https://github.com/franciscorjr/sisemes-backend.git
+ssh usuario@ip-publico
 ```
+
 
 
 
