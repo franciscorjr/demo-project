@@ -1,0 +1,321 @@
+
+
+1  - Criar Conta no GCP
+
+2 - Criar um Projeto novo com o nome: php-manaus-lab
+
+3 - Criar os próximos recursos e serviços dentro do projeto, o nome do projeto será:  php-manaus-lab
+
+4 - Criar uma VPC Personalizada e configurar uma sub-rede.
+       Nome da VPC será: web-app-network
+       Descrição: Rede utilizada no projeto web
+       Intervalo IPV6 interno de ULA da rede VPC: Desativados
+
+       Modo de Criação da sub-rede: Personalizado
+       Nome da Sub-rede: web-app-subnet
+       Descrição da Sub-rede: Sub-rede que será utilizada no projeto web
+       Região: us-centra-1
+       Tipo de Pilha de IP: IPV4
+       Intervalo IPV4: 10.10.0.0/24
+       Acesso Privado do Google: Ativado
+       Registros de Fluxo: Desativado
+
+       Configuração de Regras de Firewall:
+       Vamos Selecionar quais Protocolos Estão liberados no Firewall:
+       1 - web-app-network-allow-icmp
+       2 - web-app-network-allow-ssh
+
+       Modo de roteamento dinâmico: Global
+
+5 - Configuração de Chave SSH no GCP
+      Caso você ainda não tinha uma chave SSH Publica e Privada na sua máquina você precisar criar uma
+      Criar Diretório  padrão: mkdir .ssh
+      Gerar Chaves Publicas e Privadas: ssh-keygen -m PEM -N '' -f ~/.ssh/id_rsa
+      Visualizar o Conteúdo da Chave: cat .ssh/id_rsa.pub
+
+
+
+5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Computer Engine e adiciona-lo a rede da VPC
+      Nome da Computer Engine: web-app-server
+      Região: us-central1 (Iowa)
+      Zona: us-central1-a
+     Tipo: e2-small
+     Ubuntu: 24.04 x64
+      CPU: 1 VCPU
+      RAM: 2GB
+      Disco Permanente Equilibrado: 30GB
+
+6 - Atribuir um nome de DNS na rede interna do VPC para o Servidor de Aplicação
+      Criar Zona de DNS
+      Nome da Zona: php-manaus-lab-zone
+      Nome do DNS: php.manaus.lab.example
+      Descrição: Zona responsável em resolver, os nomes de domínios de serviços da GCP
+      Opções: Padrão Privado
+      Rede: web-app-network
+
+      Adicionar o Registro de DNS do Servidor de Aplicação
+      Nome de DNS do Servidor de aplicação: web-app-1
+      Tipo de Registro: A
+      TLL: 5
+      Unidade de TLL: minutos
+      Endereço IPV4: Selecionar o IP Interno
+
+7 - Reservar um IP Externo Estático
+     Nome: web-app-server-ip
+     Descrição: Reservar de IP para o Servidor de Aplicação Web
+     Nível de Serviço de Rede: Premium
+     Versão do IP: IPv4
+     Tipo: Regional
+     Anexado: web-app-server
+
+8 - Conectar ao servidor de Aplicação via SSH para testar
+      Comando: ssh usuario@ip-publico
+
+9 - Atualizar os pacotes do  Ubuntu
+       Como usuário root: sudo su
+       Comando: apt-get update && apt-get upgrade
+       Vamos instalar o vim: apt-get install vim -y
+
+10 - Instalação do Nginx
+        Ainda logado como root vamos continuar
+        Comando: apt-get install nginx
+        Verifique se o serviço está rodando: systemctl status nginx
+        Teste acessando o navegador
+        Se tiver esquecido o IP publico: wget -qO- icanhazip.com
+
+11 - Instalação do PHP 8.4
+        Instalar as dependências básicas:
+
+  sudo apt install -y \
+  ca-certificates \
+  apt-transport-https \
+  software-properties-common \
+  lsb-release \
+  curl \
+  unzip \
+  git
+
+  Adicionar os repositórios do PPA:
+
+  sudo add-apt-repository ppa:ondrej/php -y
+  sudo apt update
+
+  Instalar PHP 8.4 + PHP-FPM + Extenções exigidas pelo Laravel:
+
+sudo apt install -y \
+  php8.4 \
+  php8.4-fpm \
+  php8.4-cli \
+  php8.4-common \
+  php8.4-mbstring \
+  php8.4-xml \
+  php8.4-bcmath \
+  php8.4-curl \
+  php8.4-zip \
+  php8.4-gd \
+  php8.4-intl \
+  php8.4-soap \
+  php8.4-opcache \
+  php8.4-readline \
+  php8.4-pgsql \
+  php8.4-mysql \
+  php8.4-redis
+
+   Verificar a instalação do PHP: php -v
+   Verificar a instalação do PHP-FPM: sudo systemctl status php8.4-fpm
+
+   Se não estiver ativo:
+
+   sudo systemctl enable php8.4-fpm
+   sudo systemctl start php8.4-fpm
+
+   Instalação do Composer, também não estando logado como root:
+
+   cd /tmp
+   curl -sS https://getcomposer.org/installer | php
+   sudo mv composer.phar /usr/local/bin/composer
+   sudo chmod +x /usr/local/bin/composer
+
+   Verificar ser o Composer pode ser executado: composer --version
+
+         Opcional: Instalar Clientes de Bancos de Dados
+         mysql: sudo apt install -y mysql-client
+         postgresql: sudo apt install -y postgresql-client
+         redis: sudo apt install -y redis-tools
+
+   Verificar a instalação:
+
+   mysql --version
+   psql --version
+   redis-cli --version
+
+   Verificar se os módulos do PHP estão ok: php -m
+
+   Editar os arquivos .ini para produção (opcional)
+
+   sudo vim /etc/php/8.4/fpm/php.ini
+   sudo vim /etc/php/8.4/cli/php.ini
+
+   memory_limit = 512M
+   upload_max_filesize = 50M
+   post_max_size = 50M
+   max_execution_time = 60
+   date.timezone = America/Manaus
+   expose_php = Off
+
+    Habilitar o PHP-FPM no NGINX  como root:
+
+    cd /var/www/html/
+    vim test.php
+
+    Adicionar esse conteúdo de teste:
+    <?php
+    phpinfo();
+
+    salvar e testar e testar no navegador usando /test.php
+    nesse momento vamos ver que invés do código PHP ser executado na verdade o navegador baixou o arquivo
+    isso acontece porque o Nginx não sabe ele deve na verdade enviar os arquivos PHP para serem executados pelo PHP-FPM
+
+    Vamos configurar:
+     vim /etc/nginx/sites-enabled/default
+
+     vamos adicionar esse trecho de código logo após o location {...}
+
+
+location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+}
+
+Vamos checar a sintaxe : nginx -t
+Vamos reiniciar o Nginx: systemctl restart nginx
+
+E ai podemos testar novamente
+Se tiver esquecido o IP publico: wget -qO- icanhazip.com
+
+12 - Criar o Servidor de  Banco de Dados PostgreSQL 17 utilizando o Cloud SQL e adiciona-lo a rede da VPC
+        Nome da Instancia do Cloud SQL: db-server
+        Usuário: postgres
+        Senha: V43<J@)`f*fG4yR=
+
+        Criando Usuário para a aplicação:
+        Usuário: web-app-user
+        Senha: ld3XGOI6m[7Q$P#j
+        Banco de Dados: web-app-db
+        Nome DNS atribuído na rede na rede: db-server-1.php.manaus.lab.example.
+        IP: 172.17.128.3
+
+        Vamos testar se conseguimos conectar a partir do servidor de Aplicação
+        psql -h db-server-1.php.manaus.lab.example. -p 5432 -U web-app-user -d web-app-db
+
+        Já devemos ser capaz de ver o schema public
+        comando:  \dn
+
+15 - Realizar a Instalação de uma aplicação Laravel Padrão
+
+        Por questões de segurança e organização, vamos adicionar um usuário chamado web no nosso Servidor de Aplicação
+        Usuário: web
+        Senha: PHP-manaus-lab!@
+        logado como sudo comando: adduser web
+
+       agora vamos logar com o usuário web: sudo su web
+       vamos verificar se conseguimos logar whoami
+
+       vamos agora para a parta home do usuário web: cd
+       comando: pwd
+
+       Vamos criar uma pasta onde irá ficar nossa aplicação:
+       mkdir demo-project
+
+      cd demo-project
+
+      vim index.php
+
+      vamos adicionar esse conteúdo:
+
+      <?php
+      echo 'Olá Mundo!';
+
+      vamos verificar em que grupo nosso usuário está no momento, fazer isso como usuário root
+      comando:  groups web
+      adiciona ao grupo www-data, comando: usermod -aG www-data web
+      verifica novamente: groups web
+
+     vamos voltar a logar como web e aplicar as permissões no diretório:
+     comando: sudo su web
+     voltar para home: cd
+     aplicar as permissões: chmod 755 /home/web
+
+     Agora precisamos editar o Nginx para reconhecer esse novo caminho
+
+    Como root vamos: vim /etc/nginx/sites-enabled/default
+
+    vamos mudar o caminho: root /var/www/html; para root /home/web/demo-project
+
+    e vamos adicionar o index.php
+
+   agora vamos atualizar o PHP-FPM para que ele também reconhece o projeto
+
+   comando: vim /etc/php/8.4/fpm/pool.d/www.conf
+
+   precisamos alterar o user e group de www-data para web na seção [www]
+
+   agora precisamos reiniciar o nginx e o php-fpm
+   comando: systemctl restart nginx
+   comando: systemctl restart php8.4-fpm
+
+  testar acessando no navegador
+
+  agora vamos remover a diretório demo-projects para trazer de fato nossa aplicação Laravel demo-project
+  remover como usuário web
+  comando: rm -rf demo-project/
+
+  Agora vamos gerar um chave SSH para nosso servidor de Aplicação conseguir clonar nosso projeto Laravel
+  logado como usuário web
+ comando: ssh-keygen -t ed25519 -C "francisco_jr@outlook.com"
+ comando para pegar a chave publica: cat /home/web/.ssh/id_ed25519.pub
+
+  Criar chave no Github e adicionar a nossa chave publica
+
+  Clonar o repositório
+
+   Configurar o Nginx para trabalhar com o Laravel, link da doc oficial: https://laravel.com/docs/12.x/deployment#nginx
+
+   comando para editar como ROOT: vim /etc/nginx/sites-enabled/default
+
+   editar conforme a doc
+
+   após editar verifique com: nginx -t
+   se estiver tudo ok reinicie o nginx: systemctl restart nginx
+
+   agora como usuário web novamente:
+
+   cd
+   cd demo-project/
+   cp .env.example .env
+   composer install
+
+   Gere a chave atravésdo artisan
+
+   php artisan key:generate
+
+   php artisan storage:link
+
+   php artisan migrate
+
+  Instalar como web o NVM para buildar os assets do front-end
+
+  comando: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+
+  Atualizar o bash
+  comando: source ~/.bashrc
+
+  Instalar Node LTS
+  comando: nvm install --lts
+
+  Instalar as dependências do front-end e buildar
+  npm install
+  npm run build
+
+  Testar
