@@ -296,7 +296,7 @@ Se tiver esquecido o IP publico: wget -qO- icanhazip.com
    cp .env.example .env
    composer install
 
-   Gere a chave atravésdo artisan
+   Gere a chave através do artisan
 
    php artisan key:generate
 
