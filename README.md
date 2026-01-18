@@ -2,7 +2,7 @@
 
 ### Serviços utilizados: VPC, Cloud DNS, Computer Engine, Cloud SQL
 
-### Tecnologias utilizadas: PHP, Laravel, PostgreSQL, Nginx, PHP-FPM
+### Tecnologias utilizadas: PHP, Laravel, Inertia, Vue, PostgreSQL, Nginx, PHP-FPM
 
 ### 1 - Criar uma conta no console do GCP
 
@@ -359,7 +359,7 @@ comando:
 psql --version
 ```
 
-Habilitar o PHP-FPM no NGINX  como root.
+Habilitar o PHP-FPM no NGINX, logue como root.
 
 comando:
 ```
