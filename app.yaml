@@ -1,0 +1,46 @@
+runtime: php84
+service: default
+env: standard
+
+# Configurações de recursos (ajuste conforme necessário)
+# gcloud app deploy --no-promote --version=dev
+instance_class: F1
+
+# Variáveis de ambiente (movidas do seu .env)
+env_variables:
+  APP_ENV: production
+  APP_KEY: base64:O5e7HUOwWG+cGY7591/eNIJXgQwH5O2oRHsJbm+b1AM=
+  APP_DEBUG: "false"
+  APP_URL: https://dev-dot-demo-project-dot-php-manaus-lab.uc.r.appspot.com
+  
+  # Banco de Dados (Use o IP privado ou Cloud SQL Connection)
+  DB_CONNECTION: pgsql
+  DB_HOST: "/cloudsql/php-manaus-lab:us-central1:db-server"
+  DB_PORT: 5432
+  DB_DATABASE: web-app-db
+  DB_USERNAME: web-app-user
+  DB_PASSWORD: "ld3XGOI6m[7Q$P#j"
+
+  # Drivers recomendados para App Engine Standard
+  SESSION_DRIVER: database
+  CACHE_STORE: database
+  QUEUE_CONNECTION: sync
+  LOG_CHANNEL: stderr # Importante para ver logs no Google Cloud Logs Explorer
+
+  # Redireciona caches e views para a única pasta gravável do App Engine
+  VIEW_COMPILED_PATH: /tmp/storage/framework/views
+  DATA_CACHE_PATH: /tmp/storage/framework/cache
+
+handlers:
+  # Servir os assets do Vite/Inertia diretamente
+  - url: /build
+    static_dir: public/build
+
+  # Servir outros arquivos estáticos da pasta public
+  - url: /(.*\.(css|js|png|jpg|svg|ico|woff2))$
+    static_files: public/\1
+    upload: public/.*\.(css|js|png|jpg|svg|ico|woff2)$
+
+  # Todo o restante cai no index.php do Laravel
+  - url: /.*
+    script: auto
