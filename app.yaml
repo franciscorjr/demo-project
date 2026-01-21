@@ -3,7 +3,6 @@ service: default
 env: standard
 
 # Configurações de recursos (ajuste conforme necessário)
-# gcloud app deploy --no-promote --version=dev
 instance_class: F1
 
 # Variáveis de ambiente (movidas do seu .env)
@@ -12,7 +11,7 @@ env_variables:
   APP_KEY: base64:O5e7HUOwWG+cGY7591/eNIJXgQwH5O2oRHsJbm+b1AM=
   APP_DEBUG: "false"
   APP_URL: https://dev-dot-demo-project-dot-php-manaus-lab.uc.r.appspot.com
-  
+
   # Banco de Dados (Use o IP privado ou Cloud SQL Connection)
   DB_CONNECTION: pgsql
   DB_HOST: "/cloudsql/php-manaus-lab:us-central1:db-server"

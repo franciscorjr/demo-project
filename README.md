@@ -853,6 +853,82 @@ npm run build
 
 Se tudo estiver ok, agora é só correr para o abraço e testar no navegador.
 
+![Testar no Navegador uando o IP da VM](docs-img/img-47.png)
+
+## Bonus - Deploy usando o App Engine
+
+Para realizar deploy utilizando o App Engine, primeiramente precisamos ativar o App Engine.
+
+Vamos entrar no console do GCP e ativar o App Engine.
+
+![Ativando a App Engine](docs-img/img-48.png)
+
+Selecione a Conta de Serviço padrão da App Engine.
+
+![Selecionar Conta Padrão da App Engine](docs-img/img-49.png)
+
+Após realizarmos a ativação da App Engine, precisamos adicionar algumas permissões a ela.
+
+Vamos até o IAM e vamos adicionar algumas permissões para a App Engine.
+
+![Adicionar permissões para o Service account](docs-img/img-50.png)
+
+As permissões são: 
+
+1 - Administrador de objetos do Storage
+
+2 - Cliente do Cloud SQL
+
+3 - Criador de objeto do Storage
+
+4 - Editor do Cloud Build
+
+5 - Editor "essa permissão já é padrão"
+
+Também precisamos ativar o Cloud SQL Admin API.
+
+![Ativação do Cloud SQL Admin API](docs-img/img_51.png)
+
+O próximo passo é baixar e instalar o SDK do GCP no nosso computador para podermos fazer o deploy.
+
+![Download do Gcloud SDK](docs-img/img-52.png)
+
+Realize o download e instale no seu computador seguindo o passo a passo.
+
+Link: https://docs.cloud.google.com/sdk/docs/install-sdk?hl=pt-br#windows
+
+Se você estiver utilizando o Windows, lembre-se de adicionar o path da instalação nas variáveis de ambiente.
+
+Para que você possa executar o comando gcloud no seu terminal de qualquer diretório de forma global.
+
+![Variaveis de ambiente](docs-img/img-53.png)
+
+Reinicie o Windows para que essa configuração entre em vigor.
+
+Pronto, agora podemos realizar o deploy.
+
+O projeto `demo-project` já possui os arquivos necessários para realizar o deploy.
+
+Que são os arquivos `app.yaml` e `.gloudignore`
+
+![app.yaml](docs-img/img-54.png)
+
+Fique a vontade para alterar os arquivos conforme a sua necessidade.
+
+Entre na pasta do projeto demo-project, lá temos um comando para fazer o deploy no App Engine personalizado.
+
+comando:
+```
+npm run-script deploy-dev
+```
+
+Aguarde o deploy terminar e abra o link gerado pelo App Engine.
+
+Se deu tudo certo, você já deve ser capaz de usar a aplicação.
+
+![Aplicação Deployada via App Engine](docs-img/img-55.png)
+
+
 
 
 
