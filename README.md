@@ -8,6 +8,8 @@
 
 ### 2 - Criar um projeto no GCP, nesse exemplo vamos chamar o nosso projeto pelo nome: **`php-manaus-lab`**
 
+![Criar Projeto](docs-img/img-0.png)
+
 Todos os recursos a seguir serão criados e configurados nesse projeto.
 
 Durante esse processo, é possível que o GCP peça para que você ative algumas APIs.
@@ -887,7 +889,7 @@ As permissões são:
 
 Também precisamos ativar o Cloud SQL Admin API.
 
-![Ativação do Cloud SQL Admin API](docs-img/img_51.png)
+![Ativação do Cloud SQL Admin API](docs-img/img-51.png)
 
 O próximo passo é baixar e instalar o SDK do GCP no nosso computador para podermos fazer o deploy.
 
