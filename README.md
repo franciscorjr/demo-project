@@ -81,7 +81,9 @@ Criar Diretório no padrão: `mkdir .ssh`
 
 Gerar Chaves Publicas e Privadas: `ssh-keygen -m PEM -N '' -f ~/.ssh/id_rsa`
 
-Visualizar o Conteúdo da Chave: `cat .ssh/id_rsa.pub`
+Visualizar o Conteúdo da Chave: `cat ~/.ssh/id_rsa.pub`
+
+No meu caso, no meu computador, minha chave publica eu pego assim: `cat ~/.ssh/id_ed25519.pub`
 
 Depois colocar no campo Chave SSH no GCP.
 
