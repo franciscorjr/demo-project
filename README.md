@@ -323,7 +323,9 @@ sudo systemctl enable php8.4-fpm
 sudo systemctl start php8.4-fpm
 ```
 
-Agora vamos realizar a instalação do Composer, também não estando logado como root:
+Agora vamos realizar a instalação do Composer.
+
+Porém, seguindo a documentação do composer, **NÃO** devemos realizar a instalação logado como root.
 
 vamos executar os seguintes comandos:
 
@@ -496,6 +498,8 @@ Banco de Dados: **`web-app-db`**
 Nome DNS atribuído na rede na rede: **`db-server-1.php.manaus.lab.example.`**
 
 IP: **`172.17.128.3`** pode mudar de acordo com o seu ambiente.
+
+Selecione o IP Publico também para integração com o App Engine.
 
 Vamos testar se conseguimos conectar a partir do servidor de Aplicação.
 
@@ -689,11 +693,18 @@ Vamos testar acessando no navegador
 
 Se fizemos tudo certo, conseguimos visualizar o Olá Mundo!
 
-Agora vamos remover a diretório demo-projects para trazer de fato a nossa aplicação Laravel demo-project
-
-vamos remover como usuário web
+Não podemos esquecer também de excluir o arquivo de test.php que criamos anteriormente, na pasta padrão do Nginx.
 
 comando:
+```
+rm -rf teste.php
+```
+
+Agora vamos remover a diretório demo-projects para trazer de fato a nossa aplicação Laravel demo-project
+
+vamos remover como usuário web **`sudo su web`** e vamos para a home **`cd`**
+
+e agora vamos remover a pasta demo-project com o seguinte comando:
 ```
 rm -rf demo-project/
 ```
@@ -743,6 +754,12 @@ vim /etc/nginx/sites-enabled/default
 ```
 
 vamos adicionar ao arquivo:
+
+Como as aplicações Laravel possuem o arquivo index.php dentro da pasta public.
+
+Precisamos atualizar o root para apontar para a pasta public.
+
+Nosso root deve ser assim **`root /home/web/demo-project/public;`**
 
 Logo após o Index já atualizado:
 
