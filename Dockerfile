@@ -31,7 +31,7 @@ RUN composer dump-autoload --optimize --no-dev --no-scripts
 # -----------------------------------------------------------------------------
 # Stage 2: Node.js build (if using Vite/Mix)
 # -----------------------------------------------------------------------------
-FROM node:20-alpine AS node
+FROM node:22-alpine AS node
 
 WORKDIR /app
 
@@ -52,6 +52,9 @@ RUN npm run build 2>/dev/null || echo "No build script found, skipping asset bui
 # -----------------------------------------------------------------------------
 FROM dunglas/frankenphp:php8.4-alpine AS production
 
+# Build argument for APP_KEY (needed for artisan commands during build)
+ARG APP_KEY
+
 # Set environment variables
 ENV SERVER_NAME=:8080
 ENV FRANKENPHP_CONFIG="worker ./public/index.php"
@@ -59,6 +62,7 @@ ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
 ENV LOG_LEVEL=info
+ENV APP_KEY=${APP_KEY}
 
 # Cloud Run specific
 ENV PORT=8080
@@ -115,13 +119,17 @@ RUN mkdir -p \
     storage/framework/views \
     bootstrap/cache
 
+# Clear any cached files that came from COPY
+RUN rm -rf bootstrap/cache/*.php \
+    && rm -rf storage/framework/cache/data/* \
+    && rm -rf storage/framework/views/*.php
+
 # Set proper permissions before artisan commands
 RUN chown -R www-data:www-data /app \
     && chmod -R 755 /app/storage \
     && chmod -R 755 /app/bootstrap/cache
 
-# Run package discovery and cache Laravel configurations
-# Note: package:discover runs without dev packages
+# Cache Laravel configurations for production
 RUN php artisan package:discover --ansi \
     && php artisan config:cache \
     && php artisan route:cache \

@@ -9,8 +9,8 @@
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
-        "deploy-dev": "php artisan config:cache && php artisan route:cache && npm run build && gcloud app deploy --no-promote --version=dev",
-        "deploy-cloud-run": "npm run build && gcloud builds submit --config cloudbuild.yaml"
+        "deploy-app-engine": "php artisan config:cache && php artisan route:cache && npm run build && gcloud app deploy --no-promote --version=dev",
+        "deploy-cloud-run": "gcloud builds submit --config cloudbuild.yaml"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",

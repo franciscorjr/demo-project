@@ -1,7 +1,13 @@
-steps:
+steps:  
   # 1. Build da imagem Docker
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app', '.']
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'APP_KEY=base64:O5e7HUOwWG+cGY7591/eNIJXgQwH5O2oRHsJbm+b1AM='
+      - '-t'
+      - 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+      - '.'
 
   # 2. Push da imagem
   - name: 'gcr.io/cloud-builders/docker'
