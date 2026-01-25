@@ -1,0 +1,46 @@
+steps:
+  # 1. Build da imagem Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app', '.']
+
+  # 2. Push da imagem
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app']
+
+  # 3. Rodar Migrations (Cloud Run Job)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run jobs deploy migration-job \
+          --image us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app \
+          --env-vars-file env.yaml \
+          --set-cloudsql-instances=php-manaus-lab:us-central1:db-server \
+          --command="php" \
+          --args="artisan,migrate,--force" \
+          --region=us-central1 && \
+        gcloud run jobs execute migration-job --region=us-central1 --wait
+
+  # 4. Deploy final no Cloud Run (Serviço)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'web-app'
+      - '--image=us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+      - '--cpu=2'
+      - '--memory=1024Mi'
+      - '--env-vars-file=env.yaml'
+      - '--add-cloudsql-instances=php-manaus-lab:us-central1:db-server'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--timeout=700' # Dá mais tempo para o Octane subir
+      - '--port=8080'
+      - '--allow-unauthenticated'
+
+images:
+  - 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
