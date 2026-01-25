@@ -319,3 +319,15 @@ Se tiver esquecido o IP publico: wget -qO- icanhazip.com
   npm run build
 
   Testar
+
+
+  # Ativa o Cloud Build (onde o processo roda)
+  gcloud services enable cloudbuild.googleapis.com
+
+  caso ele peça para atualizar as core libs, digite: yes
+
+  # Ativa o Cloud Run (onde sua app vai morar)
+  gcloud services enable run.googleapis.com
+
+  # Ativa o Artifact Registry (onde a imagem Docker será guardada)
+  gcloud services enable artifactregistry.googleapis.com

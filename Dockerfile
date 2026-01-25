@@ -1,37 +1,136 @@
-FROM dunglas/frankenphp:1.3-php8.4-alpine
+# =============================================================================
+# Laravel Octane + FrankenPHP - Google Cloud Run
+# PHP 8.4 | Multi-stage build for optimized image size
+# =============================================================================
 
-# 1. Instalar extensões PHP necessárias
-RUN install-php-extensions pdo_pgsql intl zip opcache pcntl bcmath
-
-# 2. Garantir que o binário do FrankenPHP seja encontrado pelo Octane
-# Algumas imagens Alpine o colocam em caminhos diferentes; isso cria um atalho global
-RUN ln -s /usr/local/bin/frankenphp /usr/bin/frankenphp
+# -----------------------------------------------------------------------------
+# Stage 1: Composer dependencies
+# -----------------------------------------------------------------------------
+FROM composer:2 AS composer
 
 WORKDIR /app
 
-# 3. Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy only dependency files first for better cache
+COPY composer.json composer.lock ./
 
-# 4. Copiar código (Assets buildados localmente devem estar em public/build)
+# Install dependencies without dev packages
+RUN composer install \
+    --no-dev \
+    --no-scripts \
+    --no-autoloader \
+    --ignore-platform-reqs \
+    --prefer-dist
+
+# Copy application code
 COPY . .
 
-# 5. Instalar dependências e garantir binários do Octane
-RUN composer install --optimize-autoloader --no-dev --no-interaction --no-scripts
-RUN composer run-script post-autoload-dump
+# Generate optimized autoloader
+#RUN composer dump-autoload --optimize --no-dev
 
-# Força a instalação do binário do FrankenPHP dentro do vendor se ele não existir
-RUN php artisan octane:install --server=frankenphp
+# -----------------------------------------------------------------------------
+# Stage 2: Node.js build (if using Vite/Mix)
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS node
 
-# 6. Permissões e pastas de sistema
-RUN mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions
-RUN chmod -R 777 storage bootstrap/cache
+WORKDIR /app
 
-# Variáveis de ambiente para o Runtime
-ENV AUTOCONF_PROGRAM=frankenphp
-ENV LARAVEL_OCTANE_SERVER=frankenphp
-ENV OCTANE_STATE_FILE=/tmp/octane-state.json
+# Copy package files
+COPY package*.json ./
 
+# Install dependencies
+RUN npm ci --omit=dev 2>/dev/null || echo "No package.json found, skipping npm install"
+
+# Copy source files needed for build
+COPY . .
+
+# Build assets (Vite)
+RUN npm run build 2>/dev/null || echo "No build script found, skipping asset build"
+
+# -----------------------------------------------------------------------------
+# Stage 3: Production image with FrankenPHP
+# -----------------------------------------------------------------------------
+FROM dunglas/frankenphp:php8.4-alpine AS production
+
+# Set environment variables
+ENV SERVER_NAME=:8080
+ENV FRANKENPHP_CONFIG="worker ./public/index.php"
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV LOG_CHANNEL=stderr
+ENV LOG_LEVEL=info
+
+# Cloud Run specific
+ENV PORT=8080
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    curl \
+    libpng \
+    libjpeg-turbo \
+    libwebp \
+    freetype \
+    icu-libs \
+    libzip \
+    oniguruma \
+    libpq \
+    # For healthchecks
+    busybox-extras
+
+# Install PHP extensions
+RUN install-php-extensions \
+    pcntl \
+    pdo_mysql \
+    pdo_pgsql \
+    pgsql \
+    redis \
+    gd \
+    intl \
+    zip \
+    bcmath \
+    opcache \
+    sockets \
+    exif
+
+# Copy PHP configuration
+COPY docker/php/php.ini $PHP_INI_DIR/conf.d/99-app.ini
+COPY docker/php/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
+
+# Copy application from composer stage
+COPY --from=composer /app/vendor ./vendor
+
+# Copy built assets from node stage
+COPY --from=node /app/public/build ./public/build
+
+# Copy application code
+COPY . .
+
+# Set proper permissions
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app/storage \
+    && chmod -R 755 /app/bootstrap/cache
+
+# Create required directories
+RUN mkdir -p \
+    storage/logs \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    bootstrap/cache
+
+# Cache Laravel configurations for production
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && php artisan event:cache
+
+# Expose Cloud Run required port
 EXPOSE 8080
 
-# Usamos o entrypoint nativo do FrankenPHP se possível, ou o artisan
-CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8080"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Start Octane with FrankenPHP
+CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=8080", "--admin-port=2019"]
