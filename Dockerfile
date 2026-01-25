@@ -24,8 +24,9 @@ RUN composer install \
 # Copy application code
 COPY . .
 
-# Generate optimized autoloader
-#RUN composer dump-autoload --optimize --no-dev
+# Generate optimized autoloader without running scripts
+# (avoids issues with dev-only service providers like Pail)
+RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 # -----------------------------------------------------------------------------
 # Stage 2: Node.js build (if using Vite/Mix)
@@ -106,11 +107,6 @@ COPY --from=node /app/public/build ./public/build
 # Copy application code
 COPY . .
 
-# Set proper permissions
-RUN chown -R www-data:www-data /app \
-    && chmod -R 755 /app/storage \
-    && chmod -R 755 /app/bootstrap/cache
-
 # Create required directories
 RUN mkdir -p \
     storage/logs \
@@ -119,8 +115,15 @@ RUN mkdir -p \
     storage/framework/views \
     bootstrap/cache
 
-# Cache Laravel configurations for production
-RUN php artisan config:cache \
+# Set proper permissions before artisan commands
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app/storage \
+    && chmod -R 755 /app/bootstrap/cache
+
+# Run package discovery and cache Laravel configurations
+# Note: package:discover runs without dev packages
+RUN php artisan package:discover --ansi \
+    && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
     && php artisan event:cache
