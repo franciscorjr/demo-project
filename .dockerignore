@@ -38,10 +38,6 @@ phpunit.xml
 phpunit.xml.dist
 .phpunit.result.cache
 
-# --- Assets compilados locais (serão gerados no build) ---
-public/build
-public/hot
-
 # --- Storage e cache locais ---
 storage/logs/*
 storage/framework/cache/data/*
