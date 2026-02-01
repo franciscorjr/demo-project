@@ -940,7 +940,7 @@ Entre na pasta do projeto demo-project, lá temos um comando para fazer o deploy
 
 comando:
 ```
-npm run-script deploy-dev
+npm run deploy-app-engine
 ```
 
 Aguarde o deploy terminar e abra o link gerado pelo App Engine.
