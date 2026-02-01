@@ -35,6 +35,7 @@ steps:
       - 'deploy'
       - 'web-app'
       - '--image=us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+      - '--concurrency=1'
       - '--cpu=2'
       - '--memory=1024Mi'
       - '--env-vars-file=env.yaml'
