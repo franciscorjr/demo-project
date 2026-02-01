@@ -1,1 +1,55 @@
-/bootstrap/cache/*
+# =============================================================================
+# .dockerignore — Reduz o contexto de build drasticamente
+# =============================================================================
+
+# --- Controle de versão ---
+.git
+.gitignore
+.gitattributes
+
+# --- Dependências (serão instaladas nos stages de build) ---
+node_modules
+vendor
+
+# --- Ambiente local ---
+.env
+.env.backup
+.env.*.local
+
+# --- IDE / Editor ---
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# --- Docker (evita recursão) ---
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# --- CI/CD ---
+cloudbuild.yaml
+env.yaml
+
+# --- Testes (não vão pra produção) ---
+tests
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+
+# --- Assets compilados locais (serão gerados no build) ---
+public/build
+public/hot
+
+# --- Storage e cache locais ---
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*.php
+bootstrap/cache/*.php
+
+# --- Diversos ---
+README.md
+LICENSE
+*.md
