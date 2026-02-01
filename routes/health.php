@@ -6,9 +6,9 @@
  * Add this to your routes/web.php or routes/api.php
  */
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
     $health = [
@@ -54,6 +54,7 @@ Route::get('/health/ready', function () {
     try {
         // Quick database check
         DB::connection()->getPdo();
+
         return response('OK', 200);
     } catch (\Exception $e) {
         return response('NOT READY', 503);
