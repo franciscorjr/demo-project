@@ -28,6 +28,8 @@ Leia e depois ative se fizer sentido, Exemplo:
 
 ![Acesso privado do Google](docs-img/img-3.png)
 
+Menu Principal: **`Rede VPC / Criar Rede VPC`**
+
 Nome da VPC será: **`web-app-network`**
 
 Descrição: **`Rede utilizada no projeto web`**
@@ -87,6 +89,8 @@ No meu caso, no meu computador, minha chave publica eu pego assim: `cat ~/.ssh/i
 
 Depois colocar no campo Chave SSH no GCP.
 
+Menu Principal: **`Computer Engine / Metadados / Chaves SSH`**
+
 ### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Computer Engine e adicioná-lo a rede da VPC
 
 ![Criando Computer Engine](docs-img/img-10.png)
@@ -96,6 +100,8 @@ Depois colocar no campo Chave SSH no GCP.
 ![Configuração de Rede](docs-img/img-14.png)
 ![Configuração de Rede](docs-img/img-15.png)
 ![Computer Engine Criada](docs-img/img-16.png)
+
+Menu Principal: **`Computer Engine / Instâncias de VM`**
 
 Nome da Computer Engine: **`web-app-server`**
 
@@ -130,6 +136,8 @@ Vamos agora criar a nossa zona DNS:
 ![Criar Zona de DNS](docs-img/img-18.png)
 ![Vinculando a nossa VPC](docs-img/img-19.png)
 ![Adicionar registro de DNS para nosso Servidor de Aplicação](docs-img/img-20.png)
+
+Menu Principal: **`Servíços de Rede / Cloud DNS`**
 
 Nome da Zona: **`php-manaus-lab-zone`**
 
@@ -166,6 +174,8 @@ Para evitar isso, precisamos reservar um IP Externo e atribuí-lo ao nosso Servi
 Vamos fazer isso no console do GCP.
 
 ![Reservando IP Externo](docs-img/img-21.png)
+
+Menu Principal: **`Rede VPC / Endereços IP`**
 
 Clique em **`Reservar externo`**
 
@@ -245,7 +255,7 @@ comando:
 wget -qO- icanhazip.com
 ```
 
-### 11 - Instalação das pedendências básicas, PHP 8.4, PHP-FMP e Composer
+### 11 - Instalação das pedendências básicas, PHP 8.5, PHP-FMP e Composer
 Vamos começar instalando as dependências básicas como root
 
 comando:
@@ -271,28 +281,27 @@ sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
 ```
 
-Instalar PHP 8.4 + PHP-FPM + Extenções exigidas pelo Laravel:
+Instalar PHP 8.5 + PHP-FPM + Extenções exigidas pelo Laravel:
 
 comando:
 ```
 sudo apt install -y \
-php8.4 \
-php8.4-fpm \
-php8.4-cli \
-php8.4-common \
-php8.4-mbstring \
-php8.4-xml \
-php8.4-bcmath \
-php8.4-curl \
-php8.4-zip \
-php8.4-gd \
-php8.4-intl \
-php8.4-soap \
-php8.4-opcache \
-php8.4-readline \
-php8.4-pgsql \
-php8.4-mysql \
-php8.4-redis
+php8.5 \
+php8.5-fpm \
+php8.5-cli \
+php8.5-common \
+php8.5-mbstring \
+php8.5-xml \
+php8.5-bcmath \
+php8.5-curl \
+php8.5-zip \
+php8.5-gd \
+php8.5-intl \
+php8.5-soap \
+php8.5-readline \
+php8.5-pgsql \
+php8.5-mysql \
+php8.5-redis
 ```
 
 Verificar a instalação do PHP.
@@ -310,17 +319,17 @@ Verificar a instalação do PHP-FPM.
 
 comando:
 ```
-sudo systemctl status php8.4-fpm
+sudo systemctl status php8.5-fpm
 ```
 
 Caso o PHP-FPM não estiver ativo, você rodar os comandos abaixo.
 
 comando:
 ```
-sudo systemctl enable php8.4-fpm
+sudo systemctl enable php8.5-fpm
 ```
 ```
-sudo systemctl start php8.4-fpm
+sudo systemctl start php8.5-fpm
 ```
 
 Agora vamos realizar a instalação do Composer.
@@ -409,7 +418,7 @@ isso vará com que o Nginx passe a emcaminhar a execução dos arquivos PHP para
 
 ```
 location ~ \.php$ {
-    fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php8.5-fpm.sock;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     include fastcgi_params;
 }
@@ -657,7 +666,7 @@ Vamos atualizar o PHP-FPM para que ele também reconheça o projeto e a suas per
 
 comando:
 ```
-vim /etc/php/8.4/fpm/pool.d/www.conf
+vim /etc/php/8.5/fpm/pool.d/www.conf
 ```
 
 Precisamos alterar o user e group de www-data para web na seção [www]
@@ -686,7 +695,7 @@ comando:
 systemctl restart nginx
 ```
 ```
-systemctl restart php8.4-fpm
+systemctl restart php8.5-fpm
 ```
 
 Vamos testar acessando no navegador
