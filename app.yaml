@@ -18,7 +18,7 @@ env_variables:
 
   # Banco de Dados (Use o IP privado ou Cloud SQL Connection)
   DB_CONNECTION: pgsql
-  DB_HOST: "/cloudsql/php-manaus-lab:us-central1:db-server"
+  DB_HOST: "/cloudsql/php-manaus-lab-504912:us-central1:db-server"
   DB_PORT: 5432
   DB_DATABASE: web-app-db
   DB_USERNAME: web-app-user
