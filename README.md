@@ -453,7 +453,7 @@ já devemos ser capazes de ver o código PHP executado pelo Nginx.
 
 ![PHP Rodando](docs-img/img-28.png)
 
-### 12 - Criar o Servidor de Banco de Dados PostgreSQL 17 utilizando o Cloud SQL e adicioná-lo a rede da VPC
+### 12 - Criar o Servidor de Banco de Dados PostgreSQL 18 utilizando o Cloud SQL e adicioná-lo a rede da VPC
 
 Escolhendo Edição do Cloud SQL
 
@@ -489,6 +489,8 @@ Criando Usuário da Aplicação
 Criando Banco de dados da Aplicação
 
 ![Criando Banco de dados da Aplicação](docs-img/img-39.png)
+
+Menu Principal: **`Cloud SQL`**
 
 Nome da Instancia do Cloud SQL: **`db-server`**
 
@@ -753,7 +755,7 @@ Vamos precisar agora configurar nosso Nginx para trabalhar com o Laravel.
 
 Na documentação oficial do Laravel, existe um arquivo de configuração para o Nginx recomendado.
 
-Podemos consulta-lo no seguinte link: https://laravel.com/docs/12.x/deployment#nginx
+Podemos consulta-lo no seguinte link: https://laravel.com/docs/13.x/deployment#nginx
 
 Logado novamente como root, vamos editar o arquivo seguindo a documentação oficial do Laravel.
 
