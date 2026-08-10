@@ -6,12 +6,12 @@ steps:
       - '--build-arg'
       - 'APP_KEY=base64:O5e7HUOwWG+cGY7591/eNIJXgQwH5O2oRHsJbm+b1AM='
       - '-t'
-      - 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-repo/web-app'
       - '.'
 
-  # 2. Push da imagem
+  # 2. Push da imagem para o Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-repo/web-app']
 
   # 3. Rodar Migrations (Cloud Run Job)
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -20,9 +20,9 @@ steps:
       - '-c'
       - |
         gcloud run jobs deploy migration-job \
-          --image us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app \
+          --image us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-repo/web-app \
           --env-vars-file env.yaml \
-          --set-cloudsql-instances=php-manaus-lab-504912:us-central1:db-server \
+          --set-cloudsql-instances=$PROJECT_ID:us-central1:db-server \
           --command="php" \
           --args="artisan,migrate,--force" \
           --region=us-central1 && \
@@ -34,20 +34,20 @@ steps:
       - 'run'
       - 'deploy'
       - 'web-app'
-      - '--image=us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+      - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-repo/web-app'
       - '--concurrency=1'
       - '--cpu=2'
       - '--memory=1024Mi'
       - '--env-vars-file=env.yaml'
-      - '--add-cloudsql-instances=php-manaus-lab-504912:us-central1:db-server'
+      - '--add-cloudsql-instances=$PROJECT_ID:us-central1:db-server'
       - '--region=us-central1'
       - '--platform=managed'
-      - '--timeout=700' # Dá mais tempo para o Octane subir
+      - '--timeout=700' # da mais tempo pro octane subir
       - '--port=8080'
       - '--allow-unauthenticated'
 
 images:
-  - 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-repo/web-app'
 
 options:
   logging: CLOUD_LOGGING_ONLY
