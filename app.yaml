@@ -5,6 +5,10 @@ env: standard
 # Configurações de recursos (ajuste conforme necessário)
 instance_class: F1
 
+automatic_scaling:
+  max_instances: 5
+  min_idle_instances: 0
+
 # Variáveis de ambiente (movidas do seu .env)
 env_variables:
   APP_ENV: production
