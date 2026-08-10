@@ -4,7 +4,7 @@ steps:
     args:
       - 'build'
       - '--build-arg'
-      - 'APP_KEY=base64:O5e7HUOwWG+cGY7591/eNIJXgQwH5O2oRHsJbm+b1AM='
+      - 'APP_KEY=base64:Hikx6eCzClMZ2IKOfCHRM7ho18SATt5cXze0EeDZQbg='
       - '-t'
       - 'us-central1-docker.pkg.dev/php-manaus-lab/cloud-run-source-repo/web-app'
       - '.'
