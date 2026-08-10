@@ -50,7 +50,7 @@ RUN npm run build 2>/dev/null || echo "No build script found, skipping asset bui
 # -----------------------------------------------------------------------------
 # Stage 3: Production image with FrankenPHP
 # -----------------------------------------------------------------------------
-FROM dunglas/frankenphp:php8.4-alpine AS production
+FROM dunglas/frankenphp:php8.5-alpine AS production
 
 # Build argument for APP_KEY (needed for artisan commands during build)
 ARG APP_KEY
