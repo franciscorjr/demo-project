@@ -893,6 +893,8 @@ Para realizar deploy utilizando o App Engine, primeiramente precisamos ativar o 
 
 Vamos entrar no console do GCP e ativar o App Engine.
 
+Menu Principal: **`App Engine`**
+
 ![Ativando a App Engine](docs-img/img-48.png)
 
 Selecione a Conta de Serviço padrão da App Engine.
@@ -902,6 +904,13 @@ Selecione a Conta de Serviço padrão da App Engine.
 Após realizarmos a ativação da App Engine, precisamos adicionar algumas permissões a ela.
 
 Vamos até o IAM e vamos adicionar algumas permissões para a App Engine.
+
+Menu Principal: **`App Engine / Contas de Serviço`**
+
+Na coluna ações, clique em gerênciar permissões, na linha da conta de serviço do `App Engine default service account`.
+
+Depois clique em `Gerenciar Acesso` e adicione os papeis abaixo clicando em `Adicionar outro papel` 
+
 
 ![Adicionar permissões para o Service account](docs-img/img-50.png)
 
@@ -918,6 +927,8 @@ As permissões são:
 5 - Editor "essa permissão já é padrão"
 
 Também precisamos ativar o Cloud SQL Admin API.
+
+Menu Principal: **`APIs e Serviços / Bibliotecas de APIs`**
 
 ![Ativação do Cloud SQL Admin API](docs-img/img-51.png)
 

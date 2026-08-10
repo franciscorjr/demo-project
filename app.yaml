@@ -1,4 +1,4 @@
-runtime: php84
+runtime: php85
 service: default
 env: standard
 
