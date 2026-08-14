@@ -31,7 +31,7 @@ RUN composer dump-autoload --optimize --no-dev --no-scripts
 # -----------------------------------------------------------------------------
 # Stage 2: Node.js build (if using Vite/Mix)
 # -----------------------------------------------------------------------------
-FROM node:22-alpine AS node
+FROM node:24-alpine AS node
 
 WORKDIR /app
 
