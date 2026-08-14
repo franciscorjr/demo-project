@@ -129,8 +129,7 @@ RUN chown -R www-data:www-data /app \
     && chmod -R 755 /app/bootstrap/cache
 
 # Cache Laravel configurations for production
-RUN php artisan package:discover --ansi \
-    && php artisan config:cache \
+RUN php artisan package:discover --ansi \    
     && php artisan route:cache \
     && php artisan view:cache \
     && php artisan event:cache
