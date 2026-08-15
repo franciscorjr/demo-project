@@ -12,7 +12,8 @@
     optei por mantê-los no controle de versão do Git, para servirem de referência.
 
     Porém, em projetos reais, esses arquivos não devem ser versionados nem expostos dessa forma, 
-    pois normalmente contêm credenciais e outras informações sensíveis. 
+    pois normalmente contêm credenciais e outras informações sensíveis.
+
     Uma boa opção é utilizar serviços como o Google Secret Manager para armazenar essas credenciais de forma segura.
 
     2 — Sobre custos
