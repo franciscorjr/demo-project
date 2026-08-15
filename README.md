@@ -7,12 +7,18 @@
 #### Avisos Importantes:
     1 — Sobre os arquivos de configuração no repositório
 
-    Este é um projeto de exemplo, com o objetivo de facilitar o entendimento do processo de deploy no GCP. Como pode ser confuso configurar corretamente os arquivos .env, env.yaml, app.yaml e cloudbuild.yaml, optei por mantê-los no controle de versão do Git, para servirem de referência.
-    Porém, em projetos reais, esses arquivos não devem ser versionados nem expostos dessa forma, pois normalmente contêm credenciais e outras informações sensíveis. Uma boa opção é utilizar serviços como o Google Secret Manager para armazenar essas credenciais de forma segura.
+    Este é um projeto de exemplo, com o objetivo de facilitar o entendimento do processo de deploy no GCP. 
+    Como pode ser confuso configurar corretamente os arquivos .env, env.yaml, app.yaml e cloudbuild.yaml, 
+    optei por mantê-los no controle de versão do Git, para servirem de referência.
+
+    Porém, em projetos reais, esses arquivos não devem ser versionados nem expostos dessa forma, 
+    pois normalmente contêm credenciais e outras informações sensíveis. 
+    Uma boa opção é utilizar serviços como o Google Secret Manager para armazenar essas credenciais de forma segura.
 
     2 — Sobre custos
 
-    Todos os serviços do GCP têm custo. Tenha isso sempre em mente e não esqueça de desligar ou excluir os recursos que você criar ao longo deste tutorial, para evitar cobranças indesejadas.
+    Todos os serviços do GCP têm custo. Tenha isso sempre em mente e não esqueça de desligar ou excluir os recursos 
+    que você criar ao longo deste tutorial, para evitar cobranças indesejadas.
 
     3 - Sobre as credenciais utilizadas
 
@@ -471,6 +477,10 @@ já devemos ser capazes de ver o código PHP executado pelo Nginx.
 ![PHP Rodando](docs-img/img-28.png)
 
 ### 12 - Criar o Servidor de Banco de Dados PostgreSQL 18 utilizando o Cloud SQL e adicioná-lo a rede da VPC
+
+Por que usar o Cloud SQL?
+
+![Por que usar o Cloud SQL](docs-img/CloudSql.png)
 
 Escolhendo Edição do Cloud SQL
 
