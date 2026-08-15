@@ -895,6 +895,9 @@ Se tudo estiver ok, agora é só correr para o abraço e testar no navegador.
 ## Por que utilizar o App Engine?:
 ![App Engine](docs-img/AppEngine.png)
 
+## Topologia Proposta:
+![Topologia Proposta](docs-img/topologia2.png)
+
 Para realizar deploy utilizando o App Engine, primeiramente precisamos ativar o App Engine.
 
 Vamos entrar no console do GCP e ativar o App Engine.
@@ -983,7 +986,7 @@ Se deu tudo certo, você já deve ser capaz de usar a aplicação.
 ![Cloud Run](docs-img/CloudRun.png)
 
 ## Topologia Proposta:
-![Topologia Proposta](docs-img/topologia2.png)
+![Topologia Proposta](docs-img/topologia3.png)
 
 
 
