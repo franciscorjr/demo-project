@@ -1,8 +1,11 @@
 ## Processo de Deploy no GCP
 
-### Serviços utilizados: VPC, Cloud DNS, Computer Engine, Cloud SQL
+### Serviços utilizados: VPC (Virtual Private Cloud), Cloud DNS, Computer Engine, Cloud SQL
 
 ### Tecnologias utilizadas: PHP, Laravel, Inertia, Vue, PostgreSQL, Nginx, PHP-FPM
+
+### Topologia do Projeto:
+![Topologia do Projeto](docs-img/topologia1.png)
 
 ### 1 - Criar uma conta no console do GCP
 
@@ -889,6 +892,9 @@ Se tudo estiver ok, agora é só correr para o abraço e testar no navegador.
 
 ## Bonus - Deploy usando o App Engine
 
+## Por que utilizar o App Engine?:
+![App Engine](docs-img/AppEngine.png)
+
 Para realizar deploy utilizando o App Engine, primeiramente precisamos ativar o App Engine.
 
 Vamos entrar no console do GCP e ativar o App Engine.
@@ -970,6 +976,14 @@ Aguarde o deploy terminar e abra o link gerado pelo App Engine.
 Se deu tudo certo, você já deve ser capaz de usar a aplicação.
 
 ![Aplicação Deployada via App Engine](docs-img/img-55.png)
+
+## Bonus - Deploy usando o Cloud Run
+
+## Por que utilizar o Cloud Run?:
+![Cloud Run](docs-img/CloudRun.png)
+
+## Topologia Proposta:
+![Topologia Proposta](docs-img/topologia2.png)
 
 
 
