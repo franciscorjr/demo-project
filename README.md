@@ -1,8 +1,22 @@
 ## Processo de Deploy no GCP
 
-### Serviços utilizados: VPC (Virtual Private Cloud), Cloud DNS, Computer Engine, Cloud SQL
+### Serviços utilizados: VPC (Virtual Private Cloud), Cloud DNS, Compute Engine, Cloud SQL
 
 ### Tecnologias utilizadas: PHP, Laravel, Inertia, Vue, PostgreSQL, Nginx, PHP-FPM
+
+#### Avisos Importantes:
+    1 — Sobre os arquivos de configuração no repositório
+
+    Este é um projeto de exemplo, com o objetivo de facilitar o entendimento do processo de deploy no GCP. Como pode ser confuso configurar corretamente os arquivos .env, env.yaml, app.yaml e cloudbuild.yaml, optei por mantê-los no controle de versão do Git, para servirem de referência.
+    Porém, em projetos reais, esses arquivos não devem ser versionados nem expostos dessa forma, pois normalmente contêm credenciais e outras informações sensíveis. Uma boa opção é utilizar serviços como o Google Secret Manager para armazenar essas credenciais de forma segura.
+
+    2 — Sobre custos
+
+    Todos os serviços do GCP têm custo. Tenha isso sempre em mente e não esqueça de desligar ou excluir os recursos que você criar ao longo deste tutorial, para evitar cobranças indesejadas.
+
+    3 - Sobre as credenciais utilizadas
+
+    As credenciais usadas nos exemplos abaixo são fictícias e devem ser substituídas pelas suas próprias.
 
 ### Topologia do Projeto:
 ![Topologia do Projeto](docs-img/topologia1.png)
@@ -45,7 +59,7 @@ Nome da Sub-rede: **`web-app-subnet`**
 
 Descrição da Sub-rede: **`Sub-rede que será utilizada no projeto web`**
 
-Região: **`us-central-1`**
+Região: **`us-central1`**
 
 Tipo de Pilha de IP: **`IPv4`**
 
@@ -92,21 +106,21 @@ No meu caso, no meu computador, minha chave publica eu pego assim: `cat ~/.ssh/i
 
 Depois colocar no campo Chave SSH no GCP.
 
-Menu Principal: **`Computer Engine / Metadados / Chaves SSH`**
+Menu Principal: **`Compute Engine / Metadados / Chaves SSH`**
 
-### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Computer Engine e adicioná-lo a rede da VPC
+### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Compute Engine e adicioná-lo a rede da VPC
 
-![Criando Computer Engine](docs-img/img-10.png)
+![Criando Compute Engine](docs-img/img-10.png)
 ![Configuração da Máquina](docs-img/img-11.png)
 ![Configuração da Máquina](docs-img/img-12.png)
 ![Configuração do Disco e SO](docs-img/img-13.png)
 ![Configuração de Rede](docs-img/img-14.png)
 ![Configuração de Rede](docs-img/img-15.png)
-![Computer Engine Criada](docs-img/img-16.png)
+![Compute Engine Criada](docs-img/img-16.png)
 
-Menu Principal: **`Computer Engine / Instâncias de VM`**
+Menu Principal: **`Compute Engine / Instâncias de VM`**
 
-Nome da Computer Engine: **`web-app-server`**
+Nome da Compute Engine: **`web-app-server`**
 
 Região: **`us-central1 (Iowa)`**
 
@@ -159,9 +173,9 @@ Nome de DNS do Servidor de aplicação: **`web-app-1`**
 
 Tipo de Registro: **`A`**
 
-TLL: **`5`**
+TTL: **`5`**
 
-Unidade de TLL: **`minutos`**
+Unidade de TTL: **`minutos`**
 
 Endereço IPV4: **`Selecionar o IP Interno do Servidor de Aplicação web-app-server`**
 
@@ -197,7 +211,7 @@ Tipo: **`Regional`**
 Anexado: **`web-app-server`**
 
 ### 8 - Conectar ao servidor de Aplicação via SSH para testar
-Você pode se conectar pela interface do Computer Engine ou pelo terminal.
+Você pode se conectar pela interface do Compute Engine ou pelo terminal.
 
 Para se conectar via terminal, utilize o comando abaixo e lembre-se de alterar as informações para seu contexto.
 
@@ -251,7 +265,7 @@ Teste acessando o IP via navegador
 
 ![Testando Nginx no Navegador](docs-img/img-24.png)
 
-Se tiver esquecido o IP publico, execute o comando abaixo ou pegue no console do GCP no Computer Engine.
+Se tiver esquecido o IP publico, execute o comando abaixo ou pegue no console do GCP no Compute Engine.
 
 comando:
 ```
@@ -529,7 +543,7 @@ comando:
 \dn
 ```
 
-### 15 - Realizar a Instalação de uma aplicação Laravel Padrão
+### 13 - Realizar a Instalação de uma aplicação Laravel Padrão
 
 Por questões de segurança e organização, vamos primeiro adicionar e configurar um usuário chamado `web` no nosso Servidor de Aplicação Ubuntu.
 
@@ -711,7 +725,7 @@ Não podemos esquecer também de excluir o arquivo de test.php que criamos anter
 
 comando:
 ```
-rm -rf teste.php
+rm -rf test.php
 ```
 
 Agora vamos remover a diretório demo-projects para trazer de fato a nossa aplicação Laravel demo-project
