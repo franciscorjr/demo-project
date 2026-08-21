@@ -98,6 +98,7 @@ Rede VPC Criada com Sucesso!
 ![Rede Criada](docs-img/img-7.png)
 
 ### 4 - Configuração de Chave SSH no GCP
+Menu Principal: **`Compute Engine / Metadados / Chaves SSH`**
 ![Criando Chave SSH](docs-img/img-8.png)
 ![Criando Chave SSH](docs-img/img-9.png)
 
@@ -113,7 +114,6 @@ No meu caso, no meu computador, minha chave publica eu pego assim: `cat ~/.ssh/i
 
 Depois colocar no campo Chave SSH no GCP.
 
-Menu Principal: **`Compute Engine / Metadados / Chaves SSH`**
 
 ### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Compute Engine e adicioná-lo a rede da VPC
 
