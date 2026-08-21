@@ -6,8 +6,8 @@ env: standard
 instance_class: F1
 
 automatic_scaling:
-  max_instances: 5
   min_idle_instances: 0
+  max_instances: 5
 
 # Variáveis de ambiente (movidas do seu .env)
 env_variables:
