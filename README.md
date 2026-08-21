@@ -230,6 +230,18 @@ Comando:
 ssh usuario@ip-publico
 ```
 
+Se você esbarrar com o erro abaixo, ao tentar se conectar via terminal local através do SSH.
+
+![Finger Print Error](docs-img/finger_print_error.png)
+
+Basta executar o comando abaixo para resolver o problema, excluindo e recriando o fingerprint do servidor.
+
+![Remove External IP](docs-img/remove_external_ip.png)
+
+```
+ssh-keygen -R ip-publico
+```
+
 ### 9 - Atualizar os pacotes do  Ubuntu
 Vamos logar como usuário root e atualizar os pacotes do Ubuntu.
 
