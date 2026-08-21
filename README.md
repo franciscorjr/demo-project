@@ -551,9 +551,7 @@ Banco de Dados: **`web-app-db`**
 
 Nome DNS atribuído na rede na rede: **`db-server-1.php.manaus.lab.example.`**
 
-IP: **`172.17.128.3`** pode mudar de acordo com o seu ambiente.
-
-Selecione o IP Publico também para integração com o App Engine.
+IP: **`10.10.0.40`** pode mudar de acordo com o seu ambiente, adicione o IP Interno que o Banco recebeu.
 
 Vamos testar se conseguimos conectar a partir do servidor de Aplicação.
 
