@@ -117,6 +117,9 @@ Menu Principal: **`Compute Engine / Metadados / Chaves SSH`**
 
 ### 5 - Criar o Servidor de Aplicação Ubuntu 24.04 utilizando o Compute Engine e adicioná-lo a rede da VPC
 
+## Por que utilizar o Compute Engine?:
+![Compute Engine](docs-img/ComputeEngine.png)
+
 ![Criando Compute Engine](docs-img/img-10.png)
 ![Configuração da Máquina](docs-img/img-11.png)
 ![Configuração da Máquina](docs-img/img-12.png)
